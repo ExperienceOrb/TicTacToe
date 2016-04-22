@@ -13,18 +13,97 @@ var spaces_X = 0;
 var spaces_O = 0;
 
 function makePlayerMove(spaces) {
-    spaces_X |= spaces;
-    updateGUI();
-    turn = !turn;
-    if (testForWinner(spaces_X, spaces_O, 0) == 10){
-        alert('winner');
-    }else{
-        makeAIMove();
+    if (turn) {
+        spaces_X |= spaces;
+        updateGUI();
+        turn = !turn;
+        var res = testForWinner(spaces_X, spaces_O, 0);
+        if (checkWinner()=="none"){
+            document.getElementById("whoseturn").src="assets/computer.png";
+            stateChange(-1);
+        }
     }
 }
 
+function stateChange(newState) {
+    setTimeout(function () {
+        if (newState == -1) {
+            makeAIMove();
+        }
+    }, 1000);
+}
+
 function makeAIMove() {
-    //code
+    var b1, b2;
+    if (turn) {
+        b1 = spaces_X;
+        b2 = spaces_O;
+    } else {
+        b1 = spaces_O;
+        b2 = spaces_X;
+    }
+    var best = -11, space = 0;
+    for (var i = 0; i<possibleSpaces.length; i++) {
+        var s = possibleSpaces[i];
+        if (spaceTaken(getBoard(b1, b2), s)) continue;
+        var board1 = b1 | s;
+        var temp = minimax(board1, b2, 0, true);
+        if (temp>best) {
+            best = temp;
+            space = s;
+        }
+    }
+    if (turn) {
+        spaces_X |= space;
+    } else {
+        spaces_O |= space;
+    }
+    checkWinner();
+    updateGUI();
+    turn = !turn;
+        document.getElementById("whoseturn").src="assets/human.png";
+}
+
+function minimax(b1, b2, depth, original) {
+    var result = testForWinner(b1, b2, depth);
+    if (result !=0 || getBoard(b1, b2)==FULL_BOARD) {
+        return result;
+    }
+    original = !original;
+    var scores = [];
+    for (var i = 0; i<possibleSpaces.length; i++){
+        var s = possibleSpaces[i];
+        if (spaceTaken(getBoard(b1, b2), s)) continue;
+        if (original){
+            var nb1 = b1 | s;
+            scores.push(minimax(nb1, b2, depth+1, original));
+        } else {
+            var nb2 = b2 | s;
+            scores.push(minimax(b1, nb2, depth+1, original));
+        }
+    }
+    var mostLikelyScore = original ? -11 : 11;
+    for (var i = 0; i<scores.length; i++){
+        var s = scores[i];
+        if (original) {
+           if (s >= mostLikelyScore) mostLikelyScore = s;
+        } else {
+            if (s <= mostLikelyScore) mostLikelyScore = s;
+        }
+    }
+    return mostLikelyScore;
+}
+
+function spaceTaken(board, space) {
+    return ((board&space)==space);
+}
+
+function reset() {
+    turn = true;
+    spaces_O = 0;
+    spaces_X = 0;
+    document.getElementById("winner").className = "hidden";
+    updateGUI();
 }
 
 function getBoard(s1, s2) {
@@ -34,7 +113,6 @@ function getBoard(s1, s2) {
 function testForWinner(b1, b2, depth) {
     for (var i = 0; i<winningValues.length; i++) {
         var s = winningValues[i];
-        console.log(b1&s);
         if ((b1&s)==s) {
             return 10-depth;
         }
@@ -45,6 +123,26 @@ function testForWinner(b1, b2, depth) {
     return 0;
 }
 
+function checkWinner() {
+    var res = testForWinner(spaces_X, spaces_O, 0);
+    if (res==10) {
+        document.getElementById("windisplay").innerHTML = "HUMAN WINS!!";
+        document.getElementById("winner").className = "shown";
+        return "human";
+    } else if (res==-10) {
+        document.getElementById("windisplay").innerHTML = "COMPUTER WINS!!";
+        document.getElementById("winner").className = "shown";
+        return "computer";
+    } else {
+        if (getBoard(spaces_X, spaces_O)==FULL_BOARD) {
+            document.getElementById("windisplay").innerHTML = "NOBODY WINS!!";
+            document.getElementById("winner").className = "shown";
+            return "tie";
+        }
+    }
+    return "none";
+}
+
 function updateGUI() {
     for (var i = 0; i<9; i++) {
         var index = Math.pow(2, i);
@@ -53,6 +151,8 @@ function updateGUI() {
         }
         else if ((spaces_O&index)==index) {
             document.getElementById(index).innerHTML = "O";
+        } else {
+            document.getElementById(index).innerHTML = " ";
         }
     }
 }
