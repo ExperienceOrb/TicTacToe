@@ -4,35 +4,37 @@
     <title>Tic Tac Tie</title>
   </head>
   <body>
-    <div id="center">
-      <h2>Play Tic Tac Toe Against the Computer!</h2>
-      <br />
-      <span id="turn">Current Turn: </span><img id="whoseturn" src="assets/human.png" alt="Human" width="50" height="50" align="middle" />
-      <br />
-      <br />
-      <table align="center">
-        <tr >
-          <td id="1" class="square r b" onclick="makePlayerMove(1)"> </td>
-          <td id="2" class="square l r b" onclick="makePlayerMove(2)"> </td>
-          <td id="4" class="square l b" onclick="makePlayerMove(4)"> </td>
-        </tr>
-        <tr >
-          <td id="8" class="square r b t" onclick="makePlayerMove(8)"> </td>
-          <td id="16" class="square r b t l" onclick="makePlayerMove(16)"> </td>
-          <td id="32" class="square l b t" onclick="makePlayerMove(32)"> </td>
-        </tr>
-        <tr >
-          <td id="64" class="square r t" onclick="makePlayerMove(64)"> </td>
-          <td id="128" class="square r t l" onclick="makePlayerMove(128)"> </td>
-          <td id="256" class="square l t" onclick="makePlayerMove(256)"> </td>
-        </tr>
-      </table>
-      <br />
-      <div id="winner" class="hidden">
-        <h1 id="windisplay">SOMEBODY WINS!!</h1>
-        <button onclick="reset()">Play Again</button>
+    <div id="container">
+      <div id="center">
+        <h1>Play Tic Tac Toe Against the Computer!</h1>
+        <br />
+        <span id="turn" class="curr">Current Turn: </span><img id="whoseturn" src="assets/human.png" alt="Human" width="50" height="50" align="middle" />
+        <br />
+        <br />
+        <table align="center">
+          <tr >
+            <td id="1" class="square r b" onclick="makePlayerMove(1)"> </td>
+            <td id="2" class="square l r b" onclick="makePlayerMove(2)"> </td>
+            <td id="4" class="square l b" onclick="makePlayerMove(4)"> </td>
+          </tr>
+          <tr >
+            <td id="8" class="square r b t" onclick="makePlayerMove(8)"> </td>
+            <td id="16" class="square r b t l" onclick="makePlayerMove(16)"> </td>
+            <td id="32" class="square l b t" onclick="makePlayerMove(32)"> </td>
+          </tr>
+          <tr >
+            <td id="64" class="square r t" onclick="makePlayerMove(64)"> </td>
+            <td id="128" class="square r t l" onclick="makePlayerMove(128)"> </td>
+            <td id="256" class="square l t" onclick="makePlayerMove(256)"> </td>
+          </tr>
+        </table>
+        <br />
+        <div id="winner" class="hidden">
+          <h1 id="windisplay">SOMEBODY WINS!!</h1>
+          <button class="myButton" onclick="reset()">Play Again</button>
+        </div>
+        <script type="text/javascript" src="main.js"></script>
       </div>
-      <script type="text/javascript" src="main.js"></script>
     </div>
   </body>
 </html>
