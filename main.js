@@ -41,10 +41,8 @@ function testForWinner(b1, b2, depth) {
         else if ((b2&s)==s) {
             return depth-10;
         }
-        else{
-            return 0;
-        }
     }
+    return 0;
 }
 
 function updateGUI() {
