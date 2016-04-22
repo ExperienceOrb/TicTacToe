@@ -6,16 +6,16 @@ table{
 td{
     text-align: center;
     font-size: 108px;
-    color: #67ebed;
+    color: #3649CC;
 }
 
 h1{
-    color: #67ebed;
+    color: #222E7F;
 }
 
 .curr{
     font-size: 36px;
-    color: #67ebed;
+    color: #222E7F;
 }
 
 .square{
@@ -24,26 +24,19 @@ h1{
 }
 
 .t{
-    border-top: 8px solid black;
+    border-top: 8px solid #909EFF;
 }
 
 .l{
-    border-left: 8px solid black;
+    border-left: 8px solid #909EFF;
 }
 
 .b{
-    border-bottom: 8px solid black;
+    border-bottom: 8px solid #909EFF;
 }
 
 .r{
-    border-right: 8px solid black;
-}
-
-#container{
-    background-color: #5b6b6b;
-    width=100%;
-    height:100%;
-    left:0px;
+    border-right: 8px solid #909EFF;
 }
 
 #center{
@@ -52,14 +45,14 @@ h1{
     z-index: 999;
     top:0px;
     left: 20%;
-    background-color: #6c7c7c;
+    background-color: #435BFF;
     height: 100%;
     width: 60%;
 }
 
 body{
     text-align: center;
-    background-color: #4a5a5a;
+    background-color: #484F7F;
 }
 
 .hidden{

@@ -61,7 +61,7 @@ function makeAIMove() {
     checkWinner();
     updateGUI();
     turn = !turn;
-        document.getElementById("whoseturn").src="assets/human.png";
+    document.getElementById("whoseturn").src="assets/human.png";
 }
 
 function minimax(b1, b2, depth, original) {
@@ -99,11 +99,14 @@ function spaceTaken(board, space) {
 }
 
 function reset() {
-    turn = true;
+    //turn = true;
     spaces_O = 0;
     spaces_X = 0;
     document.getElementById("winner").className = "hidden";
     updateGUI();
+    if (!turn) {
+        makeAIMove();
+    }
 }
 
 function getBoard(s1, s2) {
