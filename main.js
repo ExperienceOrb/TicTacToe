@@ -12,9 +12,9 @@ var FULL_BOARD = 511;
 var spaces_X = 0;
 var spaces_O = 0;
 
-function makePlayerMove(spaces) {
-    if (turn) {
-        spaces_X |= spaces;
+function makePlayerMove(space) {
+    if (turn && !spaceTaken(spaces_X+spaces_O, space)) {
+        spaces_X |= space;
         updateGUI();
         turn = !turn;
         var res = testForWinner(spaces_X, spaces_O, 0);
@@ -47,7 +47,7 @@ function makeAIMove() {
         var s = possibleSpaces[i];
         if (spaceTaken(getBoard(b1, b2), s)) continue;
         var board1 = b1 | s;
-        var temp = minimax(board1, b2, 0, true);
+        var temp = minimax(board1, b2, 0, true, -11, 11);
         if (temp>best) {
             best = temp;
             space = s;
@@ -64,31 +64,34 @@ function makeAIMove() {
     document.getElementById("whoseturn").src="assets/human.png";
 }
 
-function minimax(b1, b2, depth, original) {
+//orignal = true: maximizer
+//original = false: minimizer
+//alpha is the best value from the maximizer
+//best is the 'worst' value from the minimizer
+function minimax(b1, b2, depth, original, alpha, beta) {
+    var talpha = alpha + 0;
+    var tbeta = beta + 0;
     var result = testForWinner(b1, b2, depth);
     if (result !=0 || getBoard(b1, b2)==FULL_BOARD) {
         return result;
     }
     original = !original;
-    var scores = [];
+    var mostLikelyScore = original ? -11 : 11;
     for (var i = 0; i<possibleSpaces.length; i++){
         var s = possibleSpaces[i];
         if (spaceTaken(getBoard(b1, b2), s)) continue;
         if (original){
             var nb1 = b1 | s;
-            scores.push(minimax(nb1, b2, depth+1, original));
+            var s = minimax(nb1, b2, depth+1, original, talpha, tbeta);
+            if (s >= mostLikelyScore) mostLikelyScore = s;
+            talpha = mostLikelyScore;
+            if (mostLikelyScore > beta) return mostLikelyScore;
         } else {
             var nb2 = b2 | s;
-            scores.push(minimax(b1, nb2, depth+1, original));
-        }
-    }
-    var mostLikelyScore = original ? -11 : 11;
-    for (var i = 0; i<scores.length; i++){
-        var s = scores[i];
-        if (original) {
-           if (s >= mostLikelyScore) mostLikelyScore = s;
-        } else {
+            var s = minimax(b1, nb2, depth+1, original, talpha, tbeta);
             if (s <= mostLikelyScore) mostLikelyScore = s;
+            tbeta = mostLikelyScore;
+            if (mostLikelyScore < alpha) return mostLikelyScore;
         }
     }
     return mostLikelyScore;
