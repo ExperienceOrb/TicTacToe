@@ -28,10 +28,7 @@ function makePlayerMove(space) {
 function stateChange(newState) {
     setTimeout(function () {
         if (newState == -1) {
-            console.log("With Alpha-Beta Pruning")
-            console.time('AI Move');
             makeAIMove();
-            console.timeEnd('AI Move')
         }
     }, 1000);
 }
