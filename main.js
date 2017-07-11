@@ -28,7 +28,10 @@ function makePlayerMove(space) {
 function stateChange(newState) {
     setTimeout(function () {
         if (newState == -1) {
+            console.log("With Alpha-Beta Pruning")
+            console.time('AI Move');
             makeAIMove();
+            console.timeEnd('AI Move')
         }
     }, 1000);
 }
@@ -85,13 +88,13 @@ function minimax(b1, b2, depth, original, alpha, beta) {
             var s = minimax(nb1, b2, depth+1, original, talpha, tbeta);
             if (s >= mostLikelyScore) mostLikelyScore = s;
             talpha = mostLikelyScore;
-            if (mostLikelyScore > beta) return mostLikelyScore;
+            if (mostLikelyScore >= beta) return mostLikelyScore;
         } else {
             var nb2 = b2 | s;
             var s = minimax(b1, nb2, depth+1, original, talpha, tbeta);
             if (s <= mostLikelyScore) mostLikelyScore = s;
             tbeta = mostLikelyScore;
-            if (mostLikelyScore < alpha) return mostLikelyScore;
+            if (mostLikelyScore <= alpha) return mostLikelyScore;
         }
     }
     return mostLikelyScore;
